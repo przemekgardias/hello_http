@@ -1,5 +1,5 @@
-"Build the docker container"
+#Build the docker container
 docker build -t hello_http .
-"Run the docker container"
+#Run the docker container
 
 
