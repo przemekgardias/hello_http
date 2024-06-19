@@ -1,6 +1,8 @@
-name: Build Our AMI 
-run-name: ${{ github.actor }} is building AMI
-on: [push]
+name: Build Our Container 
+run-name: ${{ github.actor }} is building container
+on:
+  pull_request:
+    types: [opened, reopened]
 jobs:
   BuildMyAppContainerImage:
     runs-on: ubuntu-latest
@@ -10,14 +12,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Check that checkout worked
         run: ls -lh
-      - name: Get Packer
-        run: sudo apt install -y packer
+      - name: Get Docker
+        run: sudo apt install -y docker
       - name: Build Image
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
-        run: |
-          packer init .
-          packer build my_app_ami.pkr.hcl
+        run: docker image build .
       
